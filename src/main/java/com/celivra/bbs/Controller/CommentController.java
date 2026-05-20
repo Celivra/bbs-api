@@ -1,7 +1,6 @@
 package com.celivra.bbs.Controller;
 
 import com.celivra.bbs.Common.Result;
-import com.celivra.bbs.Dto.PostIdDto;
 import com.celivra.bbs.Entity.Comment;
 import com.celivra.bbs.Entity.Post;
 import com.celivra.bbs.Entity.User;
@@ -39,15 +38,11 @@ public class CommentController {
     }
 
     // 获取评论
-    @GetMapping("/list")
-    public Result<?> list(@RequestBody PostIdDto postId){
-        List<Comment> comments = commentService.getByPostId(postId.getPostId());
+    @GetMapping("/list/{postId}")
+    public Result<?> list(@PathVariable String postId){
+        System.out.println(postId);
+        List<Comment> comments = commentService.getByPostId(postId);
         return Result.success(comments);
-    }
-
-    @GetMapping("/tree/{postId}")
-    public Result<?> tree(@PathVariable int postId){
-        return Result.success(commentService.getCommentTree(postId));
     }
 
     @DeleteMapping("/{id}")
