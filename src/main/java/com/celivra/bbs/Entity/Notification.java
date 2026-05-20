@@ -12,7 +12,7 @@ public class Notification {
     // 谁触发的通知
     private Integer fromUserId;
 
-    // 通知类型：LIKE / COMMENT / MESSAGE
+    // 通知类型：comment / reply
     private String type;
 
     // 关联的资源：帖子ID 或者 NULL（比如私信）
