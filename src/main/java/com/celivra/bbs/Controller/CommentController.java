@@ -40,7 +40,6 @@ public class CommentController {
     // 获取评论
     @GetMapping("/list/{postId}")
     public Result<?> list(@PathVariable String postId){
-        System.out.println(postId);
         List<Comment> comments = commentService.getByPostId(postId);
         return Result.success(comments);
     }

@@ -24,6 +24,9 @@ public interface CommentMapper {
     @Delete("DELETE FROM comments WHERE post_id = #{postId}")
     boolean deleteByPostId(int postId);
 
+    @Select("SELECT * from comments where id = #{id}")
+    Comment findById(int id);
+
     @Select("""
         SELECT * FROM comments 
         WHERE post_id = #{postId}

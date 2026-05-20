@@ -2,9 +2,11 @@ package com.celivra.bbs.Service;
 
 import com.celivra.bbs.Entity.Comment;
 import com.celivra.bbs.Entity.Post;
+import com.celivra.bbs.Entity.User;
 import com.celivra.bbs.Mapper.CommentMapper;
 import com.celivra.bbs.Mapper.NotificationMapper;
 
+import com.celivra.bbs.Mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class CommentService {
     NotificationMapper notificationMapper;
     @Autowired
     PostService postService;
+    @Autowired
+    private UserMapper userMapper;
 
     public boolean add(Comment comment, int senderId){
         comment.setUserId(senderId);
@@ -36,6 +40,20 @@ public class CommentService {
             }
         } else {
             // 回复评论（可扩展：通知评论者）
+            Post post = postService.findById(comment.getPostId());
+            if (post != null && post.getUserId() != senderId) {
+                notificationMapper.insert(
+                        post.getUserId(),
+                        senderId,
+                        "REPLY",
+                        comment.getParentId(),
+                        comment.getSender() + "回复了你的评论"
+                );
+            }
+            Comment parentComment = commentMapper.findById(comment.getParentId());
+            User parentUser = userMapper.findById(parentComment.getUserId());
+            String content = comment.getContent();
+            comment.setContent("回复"+parentUser.getUsername()+":"+content);
         }
 
         return commentMapper.add(comment);
