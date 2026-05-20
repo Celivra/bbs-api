@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.celivra</groupId>
-    <artifactId>SocialMedia</artifactId>
+    <artifactId>bbs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>SocialMedia</name>
-    <description>SocialMedia</description>
+    <name>bbs</name>
+    <description>bbs</description>
     <url/>
     <licenses>
         <license/>
