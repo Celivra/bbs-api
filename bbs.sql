@@ -30,12 +30,13 @@ CREATE TABLE `comments` (
   `sender` varchar(255) DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT (now()),
+  `avatar_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `comments_post_id_fk` (`post_id`),
   KEY `comments_user_id_fk` (`user_id`),
   CONSTRAINT `comments_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
   CONSTRAINT `comments_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +45,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (3,1,15,NULL,'celivra','a nice wallpaper','2025-12-20 09:21:40'),(4,1,17,NULL,'celivra','aaa','2025-12-20 12:06:49'),(5,1,17,NULL,'celivra','gagaga','2025-12-20 12:09:26'),(6,1,15,NULL,'celivra','aaaa','2025-12-20 12:17:44'),(7,5,15,NULL,'123','i use archlinux btw','2025-12-20 12:18:08'),(8,8,19,NULL,'cell','good','2025-12-21 09:01:57');
+INSERT INTO `comments` VALUES (3,1,15,NULL,'celivra','a nice wallpaper','2025-12-20 09:21:40','celivra_url_avater'),(4,1,17,NULL,'celivra','aaa','2025-12-20 12:06:49','celivra_url_avater'),(5,1,17,NULL,'celivra','gagaga','2025-12-20 12:09:26','celivra_url_avater'),(6,1,15,NULL,'celivra','aaaa','2025-12-20 12:17:44','celivra_url_avater'),(7,5,15,NULL,'123','i use archlinux btw','2025-12-20 12:18:08','hhh_url_avatar'),(8,8,19,NULL,'cell','good','2025-12-21 09:01:57','cell_url_avatar'),(10,5,17,NULL,'123','hello','2026-05-20 16:57:31','hhh_url_avatar'),(11,5,17,4,'123','nihao','2026-05-20 17:07:37','hhh_url_avatar'),(14,5,19,8,'123','123','2026-05-20 17:17:44','hhh_url_avatar'),(15,5,19,8,'123','回复cell:nihao','2026-05-20 17:25:58','hhh_url_avatar');
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,15 +60,15 @@ CREATE TABLE `notification` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL COMMENT '通知接收者',
   `from_user_id` int NOT NULL COMMENT '触发通知的人',
-  `type` varchar(20) NOT NULL COMMENT 'like/comment/message',
-  `related_id` int DEFAULT NULL COMMENT '关联的资源（postId 或 messageId）',
+  `related_id` int DEFAULT NULL COMMENT '关联的资源',
+  `type` varchar(255) DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL COMMENT '可选内容，如: xxx 点赞了你的帖子',
   `is_read` tinyint DEFAULT '0',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `notification_user_fk` (`user_id`),
   CONSTRAINT `notification_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +77,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (7,1,5,'MESSAGE',NULL,'q0M0p:hi',1,'2025-12-07 16:42:18'),(8,5,1,'MESSAGE',NULL,'celivra:?',1,'2025-12-07 16:42:36'),(9,1,5,'MESSAGE',NULL,'q0M0p:没事，玩去吧',1,'2025-12-07 16:56:13'),(10,5,1,'MESSAGE',NULL,'celivra:hi',1,'2025-12-07 20:09:04'),(12,1,5,'MESSAGE',NULL,'5:????',1,'2025-12-20 09:23:30'),(13,5,7,'MESSAGE',NULL,'nie:你是个🐷额',1,'2025-12-20 10:32:52'),(14,7,5,'MESSAGE',NULL,'5:你才是个🐷额',1,'2025-12-20 10:33:24'),(16,5,1,'COMMENT',17,'celivra评论了你的帖子',1,'2025-12-20 12:09:26'),(18,1,5,'COMMENT',15,'123评论了你的帖子',1,'2025-12-20 12:18:08'),(19,1,8,'MESSAGE',NULL,'cell:hi',1,'2025-12-21 09:03:52'),(20,8,1,'MESSAGE',NULL,'celivra:hi',1,'2025-12-21 09:04:20'),(21,8,9,'MESSAGE',NULL,'testuser:hello',1,'2025-12-22 17:01:19');
+INSERT INTO `notification` VALUES (24,8,5,8,'REPLY','123回复了你的评论',1,'2026-05-20 17:17:44'),(25,8,5,8,'REPLY','123回复了你的评论',0,'2026-05-20 17:25:58');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +98,7 @@ CREATE TABLE `post` (
   PRIMARY KEY (`id`),
   KEY `post_user_id_fk` (`user_id`),
   CONSTRAINT `post_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +107,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES (2,1,'hi',NULL,'this is my first post','2025-12-03 19:47:47'),(4,5,'test',NULL,'sans','2025-12-04 16:30:33'),(14,1,'aa',NULL,'aaaa','2025-12-19 12:10:55'),(15,1,'windows',NULL,'this is a windows wallpaper','2025-12-20 09:20:55'),(17,5,'test video',NULL,'this is a test video','2025-12-20 10:08:21'),(19,8,'my test post',NULL,'content','2025-12-21 09:01:37');
+INSERT INTO `post` VALUES (2,1,'hi',NULL,'this is my first post','2025-12-03 19:47:47'),(4,5,'test',NULL,'sans','2025-12-04 16:30:33'),(14,1,'aa',NULL,'aaaa','2025-12-19 12:10:55'),(15,1,'windows',NULL,'this is a windows wallpaper','2025-12-20 09:20:55'),(17,5,'test video',NULL,'this is a test video','2025-12-20 10:08:21'),(19,8,'my test post',NULL,'content','2025-12-21 09:01:37'),(21,5,'bbs revalution!!!1',NULL,'hhahahahah','2026-05-20 17:13:08'),(22,5,'bbs revalution!!!22222',NULL,'hhahahahah','2026-05-20 17:13:43');
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,7 +126,7 @@ CREATE TABLE `post_media` (
   PRIMARY KEY (`id`),
   KEY `post_media_post_id_fk` (`post_id`),
   CONSTRAINT `post_media_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,6 +135,7 @@ CREATE TABLE `post_media` (
 
 LOCK TABLES `post_media` WRITE;
 /*!40000 ALTER TABLE `post_media` DISABLE KEYS */;
+INSERT INTO `post_media` VALUES (12,21,'/upload/media/1779268388555.PNG',1),(13,22,'/upload/media/1779268423601.png',1),(14,22,'/upload/media/1779268423626.PNG',1);
 /*!40000 ALTER TABLE `post_media` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +154,7 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +163,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'52xiaozhai@gmail.com','18766971045','celivra','940727','2025-11-28 16:20:36'),(5,'12312312@gmail.com','12312313','123','123456','2025-11-29 13:24:17'),(6,'52xxx@gmail.com','111111','ce','123','2025-12-03 13:15:08'),(7,'nienie@gmail.com','10086','nie','123','2025-12-20 09:41:47'),(8,'11@qq.com','11111100','cell','123','2025-12-21 09:01:03'),(9,'11@gmail.com','10086000','testuser','123','2025-12-22 16:26:05');
+INSERT INTO `user` VALUES (1,'52xiaozhai@gmail.com','18766971045','celivra','940727','2025-11-28 16:20:36'),(5,'12312312@gmail.com','12312313','123','123456','2025-11-29 13:24:17'),(6,'52xxx@gmail.com','111111','ce','123','2025-12-03 13:15:08'),(7,'nienie@gmail.com','10086','nie','123','2025-12-20 09:41:47'),(8,'11@qq.com','11111100','cell','123','2025-12-21 09:01:03'),(9,'11@gmail.com','10086000','testuser','123','2025-12-22 16:26:05'),(10,'yuanyu@gmail.com','12312313131231','yuanyu','123456','2026-05-21 15:31:46');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +192,7 @@ CREATE TABLE `user_profile` (
 
 LOCK TABLES `user_profile` WRITE;
 /*!40000 ALTER TABLE `user_profile` DISABLE KEYS */;
-INSERT INTO `user_profile` VALUES (1,'celivra','','能力额同学们',1,'1900-01-13'),(5,'haaa','','',1,''),(6,'!人类','','不是人类',1,'2025-12-27'),(7,'nie','','',0,''),(8,'cell','','bio...',1,'2025-12-21'),(9,'testuser','','bio',1,'2025-12-19');
+INSERT INTO `user_profile` VALUES (1,'celivra','celivra_url_avater','能力额同学们',1,'1900-01-13'),(5,'haaa','hhh_url_avatar','',1,''),(6,'!人类','human_url_avatar','不是人类',1,'2025-12-27'),(7,'nie','nie_url_avatar','',0,''),(8,'cell','cell_url_avatar','bio...',1,'2025-12-21'),(9,'testuser','test_url_avatar','bio',1,'2025-12-19'),(10,'10','10_avava',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -203,4 +205,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-20 16:34:58
+-- Dump completed on 2026-05-24 21:22:59

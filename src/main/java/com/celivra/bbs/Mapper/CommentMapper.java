@@ -13,8 +13,8 @@ import java.util.List;
 public interface CommentMapper {
 
     @Insert("""
-        INSERT INTO comments(post_id, user_id, parent_id, sender, content)
-        VALUES(#{postId}, #{userId}, #{parentId}, #{sender}, #{content})
+        INSERT INTO comments(post_id, user_id, avatar_url, parent_id, sender, content)
+        VALUES(#{postId}, #{userId}, #{avatarUrl},#{parentId}, #{sender}, #{content})
         """)
     boolean add(Comment comment);
 
