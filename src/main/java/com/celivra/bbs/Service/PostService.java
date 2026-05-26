@@ -125,7 +125,6 @@ public class PostService {
         List<Map<String,Object>> list = new ArrayList<>();
 
         for(Post p : posts){
-            System.out.println(p.toString());
             Map<String,Object> map = new HashMap<>();
             map.put("post", p);
             map.put("author", userProfileMapper.findById(p.getUserId()));

@@ -68,7 +68,6 @@ public class PostController {
     }
     @GetMapping("/search")
     public Result<?> search(@RequestParam String kw){
-        System.out.println(kw);
         return Result.success(postService.searchPosts(kw));
     }
 }

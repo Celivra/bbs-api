@@ -32,7 +32,6 @@ public class UserController {
     // 登录
     @PostMapping("/login")
     public Result<?> login(@RequestBody LoginUser loginUser, HttpSession session) {
-        System.out.println(loginUser);
         User user = userService.login(loginUser.getFirst(),loginUser.getLast());
 
         if (user == null)return Result.fail("用户不存在或者密码错误");

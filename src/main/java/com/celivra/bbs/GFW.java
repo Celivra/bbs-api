@@ -46,11 +46,6 @@ public class GFW implements Filter {
             return;
         }
 
-//        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
-//            resp.setStatus(HttpServletResponse.SC_OK);
-//            return;
-//        }
-
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             resp.setContentType("application/json;charset=utf-8");

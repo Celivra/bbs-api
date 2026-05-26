@@ -49,10 +49,8 @@ public class UserService {
             user =  userMapper.findByPhone(first);
         }
         if(user == null) return null;
-        System.out.println("find !"+user);
-        if(user.getPassword().equals(password)){
-            System.out.println("password ok"+"\nis "+user.getPassword()+" and "+password);
-            return user;
-        }else return null;
+
+        if(user.getPassword().equals(password)) return user;
+        else return null;
     }
 }

@@ -10,7 +10,6 @@ import com.celivra.bbs.Service.CommentService;
 import com.celivra.bbs.Service.PostService;
 
 import com.celivra.bbs.Service.UserProfileService;
-import com.celivra.bbs.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
