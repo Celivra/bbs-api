@@ -39,6 +39,7 @@ public class CommentService {
                 );
             }
         } else {
+            System.out.println("parent Id:"+comment.getParentId());
             // 回复评论（可扩展：通知评论者）
             Post post = postService.findById(comment.getPostId());
             if (post != null && post.getUserId() != senderId) {
@@ -46,7 +47,7 @@ public class CommentService {
                         post.getUserId(),
                         senderId,
                         "REPLY",
-                        comment.getParentId(),
+                        comment.getPostId(),
                         comment.getSender() + "回复了你的评论"
                 );
             }

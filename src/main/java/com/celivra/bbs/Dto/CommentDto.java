@@ -6,10 +6,7 @@ import java.util.Date;
 
 @Data
 public class CommentDto {
-    private Integer senderId;
-    private Integer postId;
-    private Integer userId;
-    private String sender;
+    private String postId;
+    private String parentId;
     private String content;
-    private Date createTime;
 }

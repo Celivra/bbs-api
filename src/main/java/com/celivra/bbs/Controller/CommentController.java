@@ -1,6 +1,7 @@
 package com.celivra.bbs.Controller;
 
 import com.celivra.bbs.Common.Result;
+import com.celivra.bbs.Dto.CommentDto;
 import com.celivra.bbs.Entity.Comment;
 import com.celivra.bbs.Entity.Post;
 import com.celivra.bbs.Entity.User;
@@ -30,16 +31,24 @@ public class CommentController {
 
     // 发表评论
     @PostMapping("/add")
-    public Result<?> add(@RequestBody Comment comment, HttpSession session){
+    public Result<?> add(@RequestBody CommentDto commentDto, HttpSession session){
         User user = (User) session.getAttribute("user");
         if (user == null) return Result.fail("未登录");
-        Post post = postService.findById(comment.getPostId());
+        Post post = postService.findById(Integer.parseInt(commentDto.getPostId()));
         if (post == null) return Result.fail("帖子不存在");
 
         UserProfile profile = userProfileService.getProfile(user.getId());
+        Comment comment = new Comment();
         comment.setUserId(user.getId());
         comment.setSender(user.getUsername());
         comment.setAvatarUrl(profile.getAvatarUrl());
+        comment.setPostId(post.getId());
+        comment.setContent(commentDto.getContent());
+        if(commentDto.getParentId() == null){
+            comment.setParentId(null);
+        }else{
+            comment.setParentId(Integer.parseInt(commentDto.getParentId()));
+        }
         boolean ok = commentService.add(comment, user.getId());
         return ok ? Result.success("评论成功") : Result.fail("评论失败");
     }
@@ -48,10 +57,6 @@ public class CommentController {
     @GetMapping("/list/{postId}")
     public Result<?> list(@PathVariable String postId){
         List<Comment> comments = commentService.getByPostId(postId);
-        System.out.println("here is comment list for post"+postId);
-        for(Comment comment : comments){
-            System.out.println(comment);
-        }
         return Result.success(comments);
     }
 

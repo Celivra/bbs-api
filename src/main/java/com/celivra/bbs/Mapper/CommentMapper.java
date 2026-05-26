@@ -30,7 +30,7 @@ public interface CommentMapper {
     @Select("""
         SELECT * FROM comments 
         WHERE post_id = #{postId}
-        ORDER BY create_time ASC
+        ORDER BY create_time desc
         """)
     List<Comment> findByPostId(Integer postId);
 }
