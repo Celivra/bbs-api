@@ -24,4 +24,7 @@ public class NotificationService {
     public void markAllRead(Integer userId) {
         notificationMapper.markAllRead(userId);
     }
+    public void markOneRead(Integer id) {
+        notificationMapper.markOneRead(id);
+    }
 }

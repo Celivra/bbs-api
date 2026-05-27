@@ -32,4 +32,7 @@ public interface NotificationMapper {
 
     @Update("UPDATE notification SET is_read = 1 WHERE user_id = #{userId}")
     void markAllRead(Integer userId);
+
+    @Update("UPDATE notification SET is_read = 1 WHERE id = #{id}")
+    void markOneRead(Integer id);
 }
