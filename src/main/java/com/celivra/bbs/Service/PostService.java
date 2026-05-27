@@ -29,11 +29,16 @@ public class PostService {
 
     // 发帖
     public int createPost(int userId, CreatePostDto dto) {
+        String type = dto.getPtype();
+        if(!(type.equals("文学") || type.equals("科技") || type.equals("生活") || type.equals("娱乐")) ){
+            return 0;
+        }
 
         Post post = new Post();
         post.setUserId(userId);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
+        post.setPtype(dto.getPtype());
 
         boolean ok = postMapper.createPost(post);
         if (!ok) return 0;

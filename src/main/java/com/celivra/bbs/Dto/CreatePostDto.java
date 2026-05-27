@@ -8,6 +8,7 @@ import java.util.List;
 public class CreatePostDto {
     String title;
     String content;
+    String ptype;
     List<MediaItem> mediaList;
 
     @Data
