@@ -41,17 +41,17 @@ public class CommentService {
             }
         } else {
             // 回复评论（可扩展：通知评论者）
-            Post post = postMapper.findById(comment.getPostId());
-            if (post != null && post.getUserId() != senderId) {
-                notificationMapper.insert(
-                        post.getUserId(),
-                        senderId,
-                        "REPLY",
-                        comment.getPostId(),
-                        comment.getSender() + "回复了你的评论"
-                );
-            }
             Comment parentComment = commentMapper.findById(comment.getParentId());
+            if(parentComment.getUserId() == senderId){
+                return false;
+            }
+            notificationMapper.insert(
+                    parentComment.getUserId(),
+                    senderId,
+                    "REPLY",
+                    comment.getPostId(),
+                    comment.getSender() + "回复了你的评论"
+            );
             User parentUser = userMapper.findById(parentComment.getUserId());
             String content = comment.getContent();
             comment.setContent("回复"+parentUser.getUsername()+":"+content);

@@ -36,7 +36,6 @@ public class CommentController {
         Post post = postService.findById(Integer.parseInt(commentDto.getPostId()));
         if (post == null) return Result.fail("帖子不存在");
 
-        UserProfile profile = userProfileService.getProfile(user.getId());
         Comment comment = new Comment();
         comment.setUserId(user.getId());
         comment.setSender(user.getUsername());
