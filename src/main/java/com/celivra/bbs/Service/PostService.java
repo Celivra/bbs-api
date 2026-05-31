@@ -2,9 +2,7 @@ package com.celivra.bbs.Service;
 
 
 import com.celivra.bbs.Dto.CreatePostDto;
-import com.celivra.bbs.Entity.Post;
-import com.celivra.bbs.Entity.PostMedia;
-import com.celivra.bbs.Entity.UserProfile;
+import com.celivra.bbs.Entity.*;
 import com.celivra.bbs.Mapper.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,8 @@ public class PostService {
     UserProfileMapper userProfileMapper;
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     // 发帖
     public int createPost(int userId, CreatePostDto dto) {
@@ -79,6 +79,15 @@ public class PostService {
     // 删帖（只能删自己的）
     public boolean deletePost(int postId, int userId) {
         Post post = postMapper.findById(postId);
+        List<Comment> comments = commentMapper.findByPostId(postId);
+        List<Notification>  notifications = notificationMapper.findByRelatedId(postId);
+        for(Comment comment : comments){
+            commentMapper.deleteById(comment.getId());
+        }
+        for(Notification notification : notifications){
+            notificationMapper.delete(notification.getId());
+        }
+
         if (post == null || post.getUserId() != userId) return false;
 
         mediaMapper.deleteByPostId(postId);

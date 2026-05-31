@@ -2,10 +2,7 @@ package com.celivra.bbs.Mapper;
 
 import com.celivra.bbs.Entity.Notification;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,6 +24,9 @@ public interface NotificationMapper {
     """)
     List<Notification> list(Integer userId);
 
+    @Select("select * from notification where related_id = #{id}")
+    List<Notification> findByRelatedId(Integer id);
+
     @Select("SELECT COUNT(*) FROM notification WHERE user_id = #{userId} AND is_read = 0")
     Integer unreadCount(Integer userId);
 
@@ -35,4 +35,7 @@ public interface NotificationMapper {
 
     @Update("UPDATE notification SET is_read = 1 WHERE id = #{id}")
     void markOneRead(Integer id);
+
+    @Delete("DELETE from notification where id = #{id}")
+    void delete(Integer id);
 }
