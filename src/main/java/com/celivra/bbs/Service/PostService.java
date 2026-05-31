@@ -148,4 +148,17 @@ public class PostService {
         return list;
     }
 
+    public List<Map<String,Object>> searchPostsByType(String type){
+        List<Post> posts = postMapper.searchByType(type);
+        List<Map<String,Object>> list = new ArrayList<>();
+
+        for(Post p : posts){
+            Map<String,Object> map = new HashMap<>();
+            map.put("post", p);
+            map.put("author", userProfileMapper.findById(p.getUserId()));
+            map.put("media", mediaMapper.findByPostId(p.getId()));
+            list.add(map);
+        }
+        return list;
+    }
 }

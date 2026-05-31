@@ -35,4 +35,7 @@ public interface PostMapper {
     @Select("SELECT * FROM post WHERE title LIKE CONCAT('%',#{kw},'%') " +
             "OR content LIKE CONCAT('%',#{kw},'%') ORDER BY create_time DESC")
     List<Post> search(@Param("kw") String kw);
+
+    @Select("SELECT * FROM post WHERE ptype LIKE CONCAT('%',#{type},'%') ORDER BY create_time DESC")
+    List<Post> searchByType(String type);
 }

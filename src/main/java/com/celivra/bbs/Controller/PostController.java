@@ -70,4 +70,8 @@ public class PostController {
     public Result<?> search(@RequestParam String kw){
         return Result.success(postService.searchPosts(kw));
     }
+    @GetMapping("/type")
+    public Result<?> searchByType(@RequestParam String type){
+        return Result.success(postService.searchPostsByType(type));
+    }
 }
