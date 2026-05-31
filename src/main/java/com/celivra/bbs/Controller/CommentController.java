@@ -40,7 +40,6 @@ public class CommentController {
         Comment comment = new Comment();
         comment.setUserId(user.getId());
         comment.setSender(user.getUsername());
-        comment.setAvatarUrl(profile.getAvatarUrl());
         comment.setPostId(post.getId());
         comment.setContent(commentDto.getContent());
         if(commentDto.getParentId() == null){

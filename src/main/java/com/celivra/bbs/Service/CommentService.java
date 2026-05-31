@@ -3,10 +3,9 @@ package com.celivra.bbs.Service;
 import com.celivra.bbs.Entity.Comment;
 import com.celivra.bbs.Entity.Post;
 import com.celivra.bbs.Entity.User;
-import com.celivra.bbs.Mapper.CommentMapper;
-import com.celivra.bbs.Mapper.NotificationMapper;
+import com.celivra.bbs.Entity.UserProfile;
+import com.celivra.bbs.Mapper.*;
 
-import com.celivra.bbs.Mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +19,17 @@ public class CommentService {
     @Autowired
     NotificationMapper notificationMapper;
     @Autowired
-    PostService postService;
+    PostMapper postMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserProfileMapper userProfileMapper;
 
     public boolean add(Comment comment, int senderId){
         comment.setUserId(senderId);
         // 评论帖子
         if (comment.getParentId() == null) {
-            Post post = postService.findById(comment.getPostId());
+            Post post = postMapper.findById(comment.getPostId());
             if (post != null && post.getUserId() != senderId) {
                 notificationMapper.insert(
                         post.getUserId(),
@@ -40,7 +41,7 @@ public class CommentService {
             }
         } else {
             // 回复评论（可扩展：通知评论者）
-            Post post = postService.findById(comment.getPostId());
+            Post post = postMapper.findById(comment.getPostId());
             if (post != null && post.getUserId() != senderId) {
                 notificationMapper.insert(
                         post.getUserId(),
@@ -60,7 +61,12 @@ public class CommentService {
     }
 
     public List<Comment> getByPostId(String postId){
-        return commentMapper.findByPostId(Integer.parseInt(postId) );
+        List<Comment> comments = commentMapper.findByPostId(Integer.parseInt(postId) );
+        for (Comment comment : comments) {
+            UserProfile profile = userProfileMapper.findById(comment.getUserId());
+            comment.setAvatarUrl(profile.getAvatarUrl());
+        }
+        return comments;
     }
 
     public boolean delete(int commentId){
