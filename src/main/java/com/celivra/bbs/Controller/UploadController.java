@@ -43,9 +43,6 @@ public class UploadController {
                                   HttpSession session) throws Exception {
 
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail("未登录");
-        }
 
         String original = file.getOriginalFilename();
         String ext = original.substring(original.lastIndexOf("."));

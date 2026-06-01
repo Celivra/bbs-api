@@ -58,8 +58,9 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<?> delete(@PathVariable int id){
-        boolean ok = commentService.delete(id);
+    public Result<?> delete(@PathVariable int id,  HttpSession session){
+        User user = (User) session.getAttribute("user");
+        boolean ok = commentService.delete(id, user.getId());
         return ok ? Result.success("删除成功") : Result.fail("删除失败");
     }
 }

@@ -69,7 +69,11 @@ public class CommentService {
         return comments;
     }
 
-    public boolean delete(int commentId){
-        return commentMapper.deleteById(commentId);
+    public boolean delete(int commentId, int userId){
+        commentMapper.findById(commentId);
+        if(commentMapper.findById(commentId).getUserId() == userId){
+            return commentMapper.deleteById(commentId);
+        }
+        return false;
     }
 }
