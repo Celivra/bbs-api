@@ -32,13 +32,13 @@ public class CommentController {
     @PostMapping("/add")
     public Result<?> add(@RequestBody CommentDto commentDto, HttpSession session){
         User user = (User) session.getAttribute("user");
-        if (user == null) return Result.fail("未登录");
+        UserProfile userProfile = userProfileService.getProfile(user.getId());
         Post post = postService.findById(Integer.parseInt(commentDto.getPostId()));
         if (post == null) return Result.fail("帖子不存在");
 
         Comment comment = new Comment();
         comment.setUserId(user.getId());
-        comment.setSender(user.getUsername());
+        comment.setSender(userProfile.getNickname());
         comment.setPostId(post.getId());
         comment.setContent(commentDto.getContent());
         if(commentDto.getParentId() == null){
@@ -58,9 +58,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<?> delete(@PathVariable int id, HttpSession session){
-        User user = (User) session.getAttribute("user");
-        if (user == null) return Result.fail("未登录");
+    public Result<?> delete(@PathVariable int id){
         boolean ok = commentService.delete(id);
         return ok ? Result.success("删除成功") : Result.fail("删除失败");
     }

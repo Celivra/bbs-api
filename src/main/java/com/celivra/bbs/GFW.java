@@ -29,16 +29,20 @@ public class GFW implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-
         String path = req.getRequestURI();
-
+        String method = req.getMethod();
+        System.out.println(">>> HIT: " + req.getMethod() + " " + req.getRequestURI());
         // ⚡ 统一加 CORS 头
         String origin = req.getHeader("Origin");
         if (origin != null) {
             resp.setHeader("Access-Control-Allow-Origin", origin);
             resp.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-            resp.setHeader("Access-Control-Allow-Headers", req.getHeader("Access-Control-Request-Headers"));
+            resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
             resp.setHeader("Access-Control-Allow-Credentials", "true");
+        }
+        if ("OPTIONS".equalsIgnoreCase(method)) {
+            resp.setStatus(204);
+            return;
         }
 
         if (WHITE_LIST.contains(path)) {
