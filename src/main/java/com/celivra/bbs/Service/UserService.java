@@ -5,6 +5,7 @@ import com.celivra.bbs.Entity.User;
 import com.celivra.bbs.Mapper.UserMapper;
 import com.celivra.bbs.Mapper.UserProfileMapper;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,16 @@ public class UserService {
 
         if(user.getPassword().equals(password)) return user;
         else return null;
+    }
+    public Boolean password(String oldPassword, String newPassword, int userId){
+        User user = userMapper.findById(userId);
+        if(user == null){
+            return false;
+        }
+        if(oldPassword.equals(user.getPassword())){
+            int rows = userMapper.updatePassword(userId, newPassword);
+            return rows > 0;
+        }
+        return false;
     }
 }

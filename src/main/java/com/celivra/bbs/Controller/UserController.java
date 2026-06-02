@@ -3,6 +3,7 @@ package com.celivra.bbs.Controller;
 
 import com.celivra.bbs.Common.Result;
 import com.celivra.bbs.Dto.LoginUser;
+import com.celivra.bbs.Dto.PasswdDto;
 import com.celivra.bbs.Entity.User;
 import com.celivra.bbs.Service.UserService;
 
@@ -44,6 +45,15 @@ public class UserController {
 
         session.removeAttribute("user");
         return Result.success("登出成功");
+    }
+    @PostMapping("/password")
+    public Result<?> password(@RequestBody PasswdDto passwdDto, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(userService.password(passwdDto.getOldPassword(),passwdDto.getNewPassword(), user.getId())){
+            session.removeAttribute("user");
+            return Result.success("修改成功");
+        }
+        return Result.fail("修改失败");
     }
 
 }

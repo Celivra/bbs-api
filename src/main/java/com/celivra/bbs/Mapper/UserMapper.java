@@ -2,9 +2,7 @@ package com.celivra.bbs.Mapper;
 
 import com.celivra.bbs.Entity.User;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -24,4 +22,7 @@ public interface UserMapper {
 
     @Select("SELECT * FROM user WHERE id = #{id}")
     User findById(Integer id);
+
+    @Update(" update user set password = #{newPass} where id = #{id} ")
+    int updatePassword(@Param("id") Integer id, @Param("newPass") String newPass);
 }

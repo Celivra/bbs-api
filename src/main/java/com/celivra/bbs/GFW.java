@@ -31,7 +31,6 @@ public class GFW implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         String path = req.getRequestURI();
         String method = req.getMethod();
-        System.out.println(">>> HIT: " + req.getMethod() + " " + req.getRequestURI());
         // ⚡ 统一加 CORS 头
         String origin = req.getHeader("Origin");
         if (origin != null) {
@@ -46,6 +45,10 @@ public class GFW implements Filter {
         }
 
         if (WHITE_LIST.contains(path)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        if(path.startsWith("/upload/avatar/")) {
             chain.doFilter(request, response);
             return;
         }
